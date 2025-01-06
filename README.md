@@ -7,91 +7,66 @@ This project is a comprehensive fintech application designed to manage user acco
 
 ### 1. User Service
 Handles user-related operations, including registration, profile management, and retrieval of user details.
-
-- **POST /users/register**
-  - Registers a new user.
-  - Request body: User details (e.g., name, email, password, etc.).
   
-- **GET /users/{userId}**
+- **GET /api/users/{userId}**
   - Retrieves details of a specific user by ID.
-
-- **PUT /users/{userId}**
-  - Updates user profile information.
+  - 
+- **POST /api/users/activate/{id}**
+  - Active user account by ID.
+    
+- **PUT /api/users/update/{id}**
+  - Active user account by ID.
+  - Request body: User details (fullName, email, password, phoneNumber).
 
 - **DELETE /users/{userId}**
   - Deletes a user account.
 
+- **GET /api/user/all-users**
+  - Get all users
+  
 ---
 
 ### 2. Auth Service
 Manages authentication and authorization for the application.
 
-- **POST /auth/login**
+- **POST /api/auth/login**
   - Authenticates a user and generates a JWT token.
   - Request body: Username and password.
 
-- **POST /auth/logout**
-  - Logs out a user and invalidates the JWT token.
+- **POST /api/auth/users/register**
+  - Registers a new user.
+  - Request body: User details (fullName, email, password, phoneNumber).
 
-- **POST /auth/refresh-token**
-  - Generates a new token using the refresh token.
-
+- **POST /api/auth/admin/register**
+  - Registers a new user.
+  - Request body: User details (fullName, email, password, phoneNumber).
 ---
 
 ### 3. Loan Service
 Manages loan-related functionalities.
 
-- **POST /loans/apply**
+- **POST /api/loans/apply**
   - Allows users to apply for a loan.
-  - Request body: Loan details (amount, tenure, purpose, etc.).
+    - Request body: Loan details (userId, amount, tenure).
 
-- **GET /loans/{loanId}**
-  - Fetches details of a specific loan.
-
-- **GET /loans/user/{userId}**
+- **GET /api/loans/user/{userId}**
   - Retrieves all loans associated with a user.
 
-- **PUT /loans/{loanId}/status**
+- **PUT /api/loans/{loanId}/status/update**
   - Updates the status of a loan (approved, rejected, etc.).
+    - @RequestParam String status(APPROVE, REJECTED)
 
 ---
 
 ### 4. Transaction Service
 Handles financial transactions, including deposits, withdrawals, and transfers.
 
-- **POST /transactions/deposit**
-  - Deposits money into a user account.
-  - Request body: Transaction details (amount, account number, etc.).
+- **POST /api/transactions/record**
+  - Loan transaction management (DISBURSEMENT, REPAYMNET).
+  - Request body: Transaction details (userId, amount, type(DISBURSEMENT, REPAYMENT)).
 
-- **POST /transactions/withdraw**
-  - Withdraws money from a user account.
-
-- **POST /transactions/transfer**
-  - Transfers money between accounts.
-  - Request body: Sender account, receiver account, and amount.
-
-- **GET /transactions/{transactionId}**
-  - Retrieves details of a specific transaction.
-
-- **GET /transactions/user/{userId}**
-  - Fetches all transactions associated with a user.
-
----
-
-### 5. Admin Service
-Admin-specific functionalities for managing and monitoring the application.
-
-- **GET /admin/users**
-  - Retrieves all users.
-
-- **GET /admin/loans**
-  - Retrieves all loans.
-
-- **GET /admin/transactions**
-  - Retrieves all transactions.
-
-- **PUT /admin/users/{userId}/status**
-  - Updates the status of a user account (active, inactive, etc.).
+- **GET /api/transactions/loan/{loanId}**
+  - Get Loan transaction history.
 
 ---
 
@@ -119,6 +94,7 @@ mvn test
 - Adding support for multi-currency operations.
 - Integrating with third-party APIs for credit score checks.
 - Enhancing security with multi-factor authentication.
+- Admin-specific functionalities for managing and monitoring the application.
 
 ---
 
