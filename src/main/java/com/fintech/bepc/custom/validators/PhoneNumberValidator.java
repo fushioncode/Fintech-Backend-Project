@@ -11,11 +11,6 @@ public class PhoneNumberValidator implements ConstraintValidator<ValidPhoneNumbe
 
     private static final PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
 
-//    @Override
-//    public void initialize(ValidPhoneNumber constraintAnnotation) {
-//
-//    }
-
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         try {

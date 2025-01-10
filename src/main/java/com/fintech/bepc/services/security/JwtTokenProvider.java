@@ -45,8 +45,6 @@ public class JwtTokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .claim("roles", authorities)
-//                .setIssuedAt(nowDate)
-//                .setExpiration(tokenExpirationDate)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwTokenExpirationInMs))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)

@@ -1,5 +1,6 @@
 package com.fintech.bepc.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,9 @@ public class CustomHealthIndicator implements HealthIndicator {
 
     @Autowired
     private DataSource dataSource;
+
+    @Value("${service.health-check.url}")
+    private String serviceHealthUrl;
 
     @Override
     public Health health() {
@@ -55,8 +59,7 @@ public class CustomHealthIndicator implements HealthIndicator {
 
     private boolean checkApiHealth() {
         try {
-            String url = "https://your-api-url/health";
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL(serviceHealthUrl).openConnection();
             connection.setRequestMethod("GET");
             int responseCode = connection.getResponseCode();
             return responseCode == 200;

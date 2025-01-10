@@ -1,5 +1,6 @@
 package com.fintech.bepc.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -9,21 +10,27 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-
+    String schemeName = "Authorization";
+    String bearerFormat = "JWT";
+    String scheme = "bearer";
     @Bean
-    public OpenAPI customOpenAPI() {
+    public OpenAPI caseOpenAPI() {
         return new OpenAPI()
-                .info(new Info()
-                        .title("Fintech App API Documentation")
-                        .version("1.0.0")
-                        .description("Secure API documentation for the Fintech application")
-                )
-                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-                .components(new io.swagger.v3.oas.models.Components()
-                        .addSecuritySchemes("bearerAuth",
-                                new SecurityScheme()
+                .addSecurityItem(new SecurityRequirement()
+                        .addList(schemeName)).components(new Components()
+                        .addSecuritySchemes(
+                                schemeName, new SecurityScheme()
+                                        .name(schemeName)
                                         .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")));
+                                        .bearerFormat(bearerFormat)
+                                        .in(SecurityScheme.In.HEADER)
+                                        .scheme(scheme)
+                        )
+                )
+                .info(new Info()
+                        .title("Fintech Backend Engineer Practical Challenge")
+                        .description("User Loan Transaction Management")
+                        .version("1.0")
+                );
     }
 }

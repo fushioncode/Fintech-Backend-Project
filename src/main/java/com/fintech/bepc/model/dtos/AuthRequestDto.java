@@ -1,5 +1,7 @@
 package com.fintech.bepc.model.dtos;
 
+import com.fintech.bepc.custom.annotations.ValidEmail;
+import com.fintech.bepc.custom.annotations.ValidPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,11 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthRequestDto {
-    @Email(message = "Invalid email format")
-    @NotBlank(message = "Email cannot be blank")
+    @ValidEmail
     private String email;
 
-    @NotBlank(message = "Password cannot be blank")
+    @ValidPassword
     private String password;
 }
 

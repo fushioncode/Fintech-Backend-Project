@@ -4,7 +4,6 @@ import com.fintech.bepc.model.dtos.ApiResponse;
 import com.fintech.bepc.model.dtos.AuthRequestDto;
 import com.fintech.bepc.model.dtos.AuthResponseDto;
 import com.fintech.bepc.model.dtos.UserRequestDto;
-import com.fintech.bepc.services.security.JwtTokenProvider;
 import com.fintech.bepc.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +19,9 @@ public class AuthController {
 
 
     private final AuthService authService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody AuthRequestDto authRequestDto) {
+    public ResponseEntity<AuthResponseDto> login(@Valid @RequestBody AuthRequestDto authRequestDto) {
         log.info("User attempting to log in with email: {}", authRequestDto.getEmail());
         AuthResponseDto token = authService.login(authRequestDto);
         return ResponseEntity.ok(token);

@@ -1,4 +1,4 @@
-package com.fintech.bepc.exception;
+package com.fintech.bepc.exceptions;
 
 import lombok.Builder;
 import lombok.Data;

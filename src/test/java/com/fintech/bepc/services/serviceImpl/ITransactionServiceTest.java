@@ -1,7 +1,7 @@
 package com.fintech.bepc.services.serviceImpl;
 
 
-import com.fintech.bepc.exception.DatabaseException;
+import com.fintech.bepc.exceptions.DatabaseException;
 import com.fintech.bepc.model.dtos.ApiResponse;
 import com.fintech.bepc.model.dtos.LoanResponseDto;
 import com.fintech.bepc.model.dtos.TransactionRequestDto;

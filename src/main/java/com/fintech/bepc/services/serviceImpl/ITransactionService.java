@@ -1,6 +1,6 @@
 package com.fintech.bepc.services.serviceImpl;
 
-import com.fintech.bepc.exception.DatabaseException;
+import com.fintech.bepc.exceptions.DatabaseException;
 import com.fintech.bepc.model.dtos.ApiResponse;
 import com.fintech.bepc.model.dtos.LoanResponseDto;
 import com.fintech.bepc.model.dtos.TransactionRequestDto;
@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.fintech.bepc.model.entities.Transaction.TransactionType.DISBURSEMENT;

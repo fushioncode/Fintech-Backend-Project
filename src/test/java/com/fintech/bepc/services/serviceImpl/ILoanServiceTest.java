@@ -89,11 +89,16 @@ class ILoanServiceTest {
 
     @Test
     void updateLoanStatus_ValidTransition_ReturnsSuccessResponse() {
+
+        User user = new User();
+        user.setId(1L);
+        user.setActive(true);
+
         Loan loan = new Loan();
         loan.setId(1L);
         loan.setStatus("PENDING");
         loan.setTotalAmountToPay(0.0);
-        loan.setUser(new User());
+        loan.setUser(user);
 
         when(loanRepository.findById(1L)).thenReturn(Optional.of(loan));
         when(loanRepository.save(any(Loan.class))).thenReturn(loan);
@@ -102,6 +107,30 @@ class ILoanServiceTest {
 
         assertTrue(response.isSuccess());
         assertEquals("APPROVED", response.getData().getStatus());
+        verify(loanRepository, times(1)).findById(1L);
+        verify(loanRepository, times(1)).save(loan);
+    }
+
+    @Test
+    void updateLoanStatus_ValidTransition_ReturnsSuccessResponseButLoanRejected() {
+
+        User user = new User();
+        user.setId(1L);
+        user.setActive(false);
+
+        Loan loan = new Loan();
+        loan.setId(1L);
+        loan.setStatus("PENDING");
+        loan.setTotalAmountToPay(0.0);
+        loan.setUser(user);
+
+        when(loanRepository.findById(1L)).thenReturn(Optional.of(loan));
+        when(loanRepository.save(any(Loan.class))).thenReturn(loan);
+
+        ApiResponse<LoanResponseDto> response = loanService.updateLoanStatus(1L, "APPROVED");
+
+        assertTrue(response.isSuccess());
+        assertEquals("REJECTED", response.getData().getStatus());
         verify(loanRepository, times(1)).findById(1L);
         verify(loanRepository, times(1)).save(loan);
     }

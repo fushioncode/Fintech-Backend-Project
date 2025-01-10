@@ -1,21 +1,18 @@
 package com.fintech.bepc.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fintech.bepc.exception.APIException;
+import com.fintech.bepc.exceptions.APIException;
 import com.fintech.bepc.services.security.CustomUserDetailsService;
 import com.fintech.bepc.services.security.JwtTokenProvider;
+import com.fintech.bepc.services.serviceImpl.IUserService;
 import io.jsonwebtoken.*;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,21 +22,24 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 import java.util.Map;
 
-//@WebFilter
 @Component
-@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger log = LoggerFactory.getLogger(IUserService.class);
 
     @Value("${spring.security.jwt.secret}")
     private String secretKey;
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final CustomUserDetailsService customUserDetailsService;
-    private  final ObjectMapper objectMapper;
+    private JwtTokenProvider jwtTokenProvider;
+    private CustomUserDetailsService customUserDetailsService;
+
+    public JwtAuthenticationFilter(JwtTokenProvider provider, CustomUserDetailsService userDetailsService){
+        this.jwtTokenProvider=provider;
+        this.customUserDetailsService=userDetailsService;
+    }
 
     private static final String EXCEPTION = "exception";
     final Map<String, Object> errorMap = Map.of("success", false, "message",
@@ -148,13 +148,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             token = getTokenFromRequest(request);
 
             try {
-                username = jwtTokenProvider.getEmailFromToken(token); // Parse the username from the token
+                username = jwtTokenProvider.getEmailFromToken(token);
             } catch (ExpiredJwtException e) {
                 log.error("JWT token expired: {}", e.getMessage());
-                throw new APIException("JWT token has expired", HttpServletResponse.SC_UNAUTHORIZED); // Throwing custom exception
+                throw new APIException("JWT token has expired", HttpServletResponse.SC_UNAUTHORIZED);
             } catch (JwtException e) {
                 log.error("Invalid JWT token: {}", e.getMessage());
-                throw new APIException("Invalid JWT token", HttpServletResponse.SC_UNAUTHORIZED); // Throwing custom exception
+                throw new APIException("Invalid JWT token", HttpServletResponse.SC_UNAUTHORIZED);
             }
         }
 
@@ -168,7 +168,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             } else {
-                throw new APIException("JWT token is not valid", HttpServletResponse.SC_UNAUTHORIZED); // Throwing custom exception
+                throw new APIException("JWT token is not valid", HttpServletResponse.SC_UNAUTHORIZED);
             }
         }
 

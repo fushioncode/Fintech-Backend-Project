@@ -1,4 +1,4 @@
-package com.fintech.bepc.exception;
+package com.fintech.bepc.exceptions;
 
 
 public class DatabaseException extends RuntimeException {

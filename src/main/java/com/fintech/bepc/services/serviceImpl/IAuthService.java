@@ -1,6 +1,6 @@
 package com.fintech.bepc.services.serviceImpl;
 
-import com.fintech.bepc.exception.UnauthorizedException;
+import com.fintech.bepc.exceptions.UnauthorizedException;
 import com.fintech.bepc.model.dtos.AuthRequestDto;
 import com.fintech.bepc.model.dtos.AuthResponseDto;
 import com.fintech.bepc.model.dtos.UserRequestDto;
@@ -16,8 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
