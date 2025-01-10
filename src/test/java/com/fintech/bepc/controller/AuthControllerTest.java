@@ -5,7 +5,6 @@ import com.fintech.bepc.model.dtos.AuthRequestDto;
 import com.fintech.bepc.model.dtos.AuthResponseDto;
 import com.fintech.bepc.model.dtos.UserRequestDto;
 import com.fintech.bepc.services.AuthService;
-import com.fintech.bepc.services.security.JwtTokenProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -22,9 +20,6 @@ class AuthControllerTest {
 
     @Mock
     private AuthService authService;
-
-    @Mock
-    private JwtTokenProvider jwtTokenProvider;
 
     @InjectMocks
     private AuthController authController;

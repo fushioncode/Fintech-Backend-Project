@@ -53,12 +53,9 @@ public class IAuthService implements AuthService {
         user.setPhoneNumber(authRequestDto.getPhoneNumber());
         user.setFullName(authRequestDto.getFullName());
         String hashedPassword = passwordEncoder.encode(authRequestDto.getPassword());
-        log.info("Password hash: {}", hashedPassword);
         user.setPassword(hashedPassword);
-        log.info("Hash password after setting: {}", hashedPassword);
         user.setRole(User.Role.USER);
-        var newUser = userRepository.save(user);
-        log.info("Hashed password after save: {}", newUser.getPassword());
+        userRepository.save(user);
     }
 
     @Override

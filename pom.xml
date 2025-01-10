@@ -27,7 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>23</java.version>
+		<java.version>21</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -135,12 +135,17 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.5.2</version>
+				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<systemPropertyVariables>
+						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+					</systemPropertyVariables>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.7</version>
+				<version>0.8.9</version>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
@@ -167,14 +172,12 @@
 							<dataFile>target/jacoco.exec</dataFile>
 							<!-- Sets the output directory for the code coverage report. -->
 							<outputDirectory>target/test-reports</outputDirectory>
+							<excludes>
+								<exclude>com/fintech/bepc/config/JwtAuthenticationFilter.class</exclude>
+							</excludes>
 						</configuration>
 					</execution>
 				</executions>
-<!--				<configuration>-->
-<!--					<systemPropertyVariables>-->
-<!--						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>-->
-<!--					</systemPropertyVariables>-->
-<!--				</configuration>-->
 			</plugin>
 		</plugins>
 	</build>
