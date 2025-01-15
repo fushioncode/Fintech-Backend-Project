@@ -37,7 +37,7 @@ public class SwaggerConfig {
                 .info(new io.swagger.v3.oas.models.info.Info()
                         .title(title)
                         .description(description)
-                        .version("1.0")
+                        .version(version)
                         .contact(new io.swagger.v3.oas.models.info.Contact()
                                 .name("Backyard Technologies")
                                 .email("info@backyard.ng")

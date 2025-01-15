@@ -45,78 +45,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     final Map<String, Object> errorMap = Map.of("success", false, "message",
             "Could not validate your credentials");
 
-//    @Override
-//    protected void doFilterInternal(
-//            HttpServletRequest request,
-//            @NotNull HttpServletResponse response,
-//            @NotNull FilterChain filterChain) throws IOException {
-//
-//        // Handle pre-flight OPTIONS requests
-//        if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
-//            response.setStatus(HttpServletResponse.SC_OK);
-//            return;
-//        }
-//
-//        final String AUTH_HEADER_KEY = "Authorization";
-//        final String authorizationHeader = request.getHeader(AUTH_HEADER_KEY);
-//
-//        String username = null;
-//        String jwtToken = "";
-//
-//
-//        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-//            jwtToken = authorizationHeader.substring(7);
-//            try {
-//                username = jwtTokenProvider.getEmailFromToken(jwtToken);
-//            } catch (IllegalArgumentException | BadCredentialsException e) {
-//                logger.error("::::: IllegalArgumentException or BadCredentialsException ==>" + e.getLocalizedMessage());
-//                request.setAttribute(EXCEPTION, "Bad credentials - Could not process token");
-//            } catch (ExpiredJwtException e) {
-//                doProcessIfRequestIsForRefreshToken(request, e);
-//            } catch (Exception e) {
-//                logger.error("::::: Unable to get JWT Token ==>" + e.getMessage());
-//                request.setAttribute(EXCEPTION, "Could not process token " + e.getMessage());
-//            }
-//
-//        } else {
-//            logger.warn("JWT Token does not begin with Bearer String");
-////            request.setAttribute(EXCEPTION, "Bearer Authorization header is required");
-//            throw new IllegalArgumentException("Bearer Authorization header is required");
-//        }
-//
-//        doCredentialValidation(request, username, jwtToken);
-//        defineWhetherToContinueBasedOnTokenValidation(request, response, filterChain);
-//    }
-//
-//    private void doCredentialValidation(HttpServletRequest request, String username, String jwtToken) {
-//        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-//            UserDetails userDetails = this
-//                    .customUserDetailsService.loadUserByUsername(username);
-//
-//            Boolean isValid = validateToken(jwtToken);
-//            if (Boolean.TRUE.equals(isValid)) {
-//                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-//                        new UsernamePasswordAuthenticationToken(
-//                                userDetails, null, userDetails.getAuthorities());
-//                usernamePasswordAuthenticationToken.setDetails(
-//                        new WebAuthenticationDetailsSource().buildDetails(request)
-//                );
-//                SecurityContextHolder.getContext()
-//                        .setAuthentication(usernamePasswordAuthenticationToken);
-//            }
-//        }
-//    }
-//
-//    private void defineWhetherToContinueBasedOnTokenValidation(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws IOException {
-//        try {
-//            filterChain.doFilter(request, response);
-//        } catch (final AccessDeniedException | ServletException e) {
-//            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-//            response.getWriter()
-//                    .write(new ObjectMapper().writeValueAsString(errorMap));
-//        }
-//    }
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -130,15 +58,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String requestURI = request.getRequestURI();
         log.info("CURRENT PATH: {}", requestURI);
-
-//        boolean isWhitelisted = Arrays.stream(whitelistedPaths)
-//                .anyMatch(requestURI::startsWith);
-//
-//        // If it's a whitelisted path, just proceed
-//        if (isWhitelisted) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
 
         String username = null;
         String token = null;
@@ -217,8 +136,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return false;
     }
 
-    private String extractUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-    }
 }
 
